@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ID Card Guru Kemenag</title>
+    <style>
+        :root {
+            --kemenag-hijau: #1a5d1a;
+            --kemenag-kuning: #d4af37;
+            --text-dark: #333333;
+            --text-light: #f8f8f8;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--kemenag-hijau), #2a7a2a);
+            color: var(--text-light);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .app-title {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .app-subtitle {
+            margin: 5px 0 0;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--kemenag-hijau);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 93, 26, 0.2);
+        }
+        
+        .search-button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--kemenag-kuning), #e5c100);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .search-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        /* Cards Container */
+        .cards-container {
+            display: none;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        /* ID Card Styles */
+        .id-card {
+            width: 280px;
+            height: 420px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .id-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--kemenag-hijau), #2a7a2a);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-light);
+        }
+        
+        .kemenag-logo {
+            width: 80px;
+            height: auto;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .school-info {
+            margin-top: 10px;
+        }
+        
+        .ministry-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .school-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .photo-section {
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .teacher-photo {
+            width: 140px;
+            height: 180px;
+            margin: 0 auto;
+            background: #f0f0f0;
+            border: 3px solid var(--kemenag-kuning);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .teacher-info {
+            padding: 0 20px 20px;
+            text-align: center;
+        }
+        
+        .teacher-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .teacher-position {
+            color: var(--kemenag-hijau);
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .teacher-details {
+            margin-top: 15px;
+            font-size: 13px;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: var(--kemenag-hijau);
+        }
+        
+        .detail-value {
+            font-weight: 500;
+        }
+        
+        .card-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background: var(--kemenag-hijau);
+            color: var(--text-light);
+            font-size: 10px;
+            text-align: center;
+        }
+        
+        /* Status Messages */
+        .status-message {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            display: none;
+        }
+        
+        .loading {
+            color: var(--kemenag-hijau);
+        }
+        
+        .no-results {
+            color: #d9534f;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .search-section, .app-header {
+                display: none;
+            }
+            
+            .cards-container {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10mm;
+                padding: 10mm;
+            }
+            
+            .id-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1 class="app-title">SISTEM IDENTITAS GURU</h1>
+            <p class="app-subtitle">Kementerian Agama Republik Indonesia</p>
+        </header>
+        
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Masukkan Nama atau NIP Guru...">
+                <button class="search-button" onclick="searchTeacher()">
+                    <i class="fas fa-search"></i> Cari Guru
+                </button>
+            </div>
+        </section>
+        
+        <div class="status-message loading" id="loadingIndicator">
+            <p><i class="fas fa-spinner fa-spin"></i> Sedang memuat data...</p>
+        </div>
+        
+        <div class="status-message no-results" id="noResultsMessage">
+            <p><i class="fas fa-exclamation-circle"></i> Tidak ditemukan guru dengan kriteria tersebut</p>
+        </div>
+        
+        <div class="cards-container" id="cardsContainer">
+            <!-- ID Cards akan muncul di sini -->
+        </div>
+    </div>
+
+    <script>
+        // Konfigurasi
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzrLUZn9-upYb3ELYKiimdtjVHZ0ykNfbIjxkOl6o8N3Dq505IT2yGTLQIASn05Hvl4/exec';
+        let allTeachers = [];
+        let searchTimeout = null;
+
+        // Membuat ID Card dari data guru
+        function createIDCard(teacher) {
+            return `
+                <div class="id-card">
+                    <div class="card-header">
+                        <img src="https://i.imgur.com/ncVjO68.png" alt="Logo Kemenag" class="kemenag-logo">
+                        <div class="school-info">
+                            <div class="ministry-name">KEMENTERIAN AGAMA RI</div>
+                            <div class="school-name">${teacher.sekolah || 'NAMA SEKOLAH'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-section">
+                        <div class="teacher-photo">
+                            <img src="${teacher.foto || 'https://via.placeholder.com/140x180?text=FOTO+GURU'}" 
+                                 onerror="this.onerror=null;this.src='https://via.placeholder.com/140x180?text=FOTO+TIDAK+ADA'"
+                                 alt="Foto Guru">
+                        </div>
+                    </div>
+                    
+                    <div class="teacher-info">
+                        <div class="teacher-name">${teacher.nama || 'NAMA GURU'}</div>
+                        <div class="teacher-position">${teacher.jabatan || 'JABATAN'}</div>
+                        
+                        <div class="teacher-details">
+                            <div class="detail-item">
+                                <span class="detail-label">NIP:</span>
+                                <span class="detail-value">${teacher.nip || '-'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">Aktif</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Masa Berlaku:</span>
+                                <span class="detail-value">31/12/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        Kartu ini berlaku selama bertugas di lingkungan Kementerian Agama
+                    </div>
+                </div>
+            `;
+        }
+
+        // Menampilkan hasil pencarian
+        function displayResults(teachers) {
+            const container = document.getElementById('cardsContainer');
+            const noResults = document.getElementById('noResultsMessage');
+            
+            container.innerHTML = '';
+            
+            if (teachers.length > 0) {
+                container.innerHTML = teachers.map(createIDCard).join('');
+                container.style.display = 'flex';
+                noResults.style.display = 'none';
+            } else {
+                container.style.display = 'none';
+                noResults.style.display = 'block';
+            }
+        }
+
+        // Fungsi pencarian guru dengan debounce
+        function searchTeacher() {
+            clearTimeout(searchTimeout);
+            
+            searchTimeout = setTimeout(() => {
+                const searchTerm = document.getElementById('searchInput').value.trim();
+                console.log('Searching for:', searchTerm);
+                
+                if (!searchTerm) {
+                    document.getElementById('cardsContainer').style.display = 'none';
+                    document.getElementById('noResultsMessage').style.display = 'none';
+                    return;
+                }
+
+                if (!allTeachers || allTeachers.length === 0) {
+                    alert('Data belum dimuat. Silakan tunggu...');
+                    return;
+                }
+
+                const searchLower = searchTerm.toLowerCase();
+                const filteredTeachers = allTeachers.filter(teacher => {
+                    const name = String(teacher.nama || '').toLowerCase();
+                    const nip = String(teacher.nip || '').toLowerCase();
+                    return name.includes(searchLower) || nip.includes(searchLower);
+                });
+
+                displayResults(filteredTeachers);
+            }, 300);
+        }
+
+        // Memuat data dari Google Sheets
+        async function loadData() {
+            const loading = document.getElementById('loadingIndicator');
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL);
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                console.log('Raw API data:', data);
+                
+                if (!Array.isArray(data)) {
+                    throw new Error("Data harus berupa array");
+                }
+
+                // Normalisasi data
+                allTeachers = data.map(item => ({
+                    nama: item.nama || item.Nama || '',
+                    nip: item.nip || item.NIP || '',
+                    foto: item.foto || item.Foto || '',
+                    sekolah: item.sekolah || item.Sekolah || '',
+                    jabatan: item.jabatan || item.Jabatan || ''
+                }));
+                
+                console.log('Normalized data:', allTeachers);
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert(`Gagal memuat data: ${error.message}`);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            
+            // Event listener untuk input pencarian
+            document.getElementById('searchInput').addEventListener('input', searchTeacher);
+            
+            // Event listener untuk tombol enter
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchTeacher();
+            });
+        });
+
+        // Fungsi untuk debugging
+        window.debugData = () => {
+            console.log('Current teachers data:', allTeachers);
+            fetch(APPS_SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => console.log('API raw data:', data))
+                .catch(err => console.error('API error:', err));
+        };
+    </script>
+</body>
+</html>
